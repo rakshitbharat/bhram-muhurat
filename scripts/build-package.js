@@ -277,6 +277,8 @@ async function main() {
     console.log('\n🚀 Ready for publication with:');
     console.log('   npm publish');
     console.log('\n📦 Users can install with:');
+    
+    const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
     console.log(`   npm install ${pkg.name || 'bhram-muhurat'}`);
     
   } catch (error) {
