@@ -1,0 +1,7 @@
+git actions 
+and proper git actions automation to automaintain library
+we want a git action which should run with npm token and it should be 100% proper so that release can happen with creating tag in git itself
+
+next change we want is our username 
+we have said user name is rakshit-patel but it should be rakshitbharat
+also auther name is Rakshit Patel so no problem for that 
