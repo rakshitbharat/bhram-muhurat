@@ -256,6 +256,45 @@ const calculator = new BrahmaMuhuratCalculator({
 </details>
 
 <details>
+<summary><b>📝 TypeScript Support</b></summary>
+
+Full TypeScript integration with comprehensive type definitions:
+
+```typescript
+import { CalculationParams, CalculationResult, CalculatorOptions } from 'bhram-muhurat';
+const BrahmaMuhuratCalculator = require('bhram-muhurat');
+
+// Type-safe calculator creation
+const calculator = new BrahmaMuhuratCalculator({
+  precision: 'high',
+  traditionType: 'standard',
+  refractionModel: 'bennett'
+});
+
+// Type-safe parameters
+const params: CalculationParams = {
+  latitude: 25.317644,
+  longitude: 83.005495,
+  date: '2024-02-18',
+  timezone: 'Asia/Kolkata'
+};
+
+// Type-safe result
+const result: CalculationResult = calculator.calculate(params);
+```
+
+**TypeScript Examples:**
+```bash
+npm run example:typescript        # All TypeScript examples
+npm run example:ts-simple        # Basic usage
+npm run example:ts-advanced      # Advanced features
+npm run example:ts-integration   # Service patterns
+```
+
+**📖 Full TypeScript Guide:** [docs/TYPESCRIPT_GUIDE.md](docs/TYPESCRIPT_GUIDE.md)
+</details>
+
+<details>
 <summary><b>🎯 Main Methods</b></summary>
 
 ### `calculate(params)` - Main calculation method
