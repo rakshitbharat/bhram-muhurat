@@ -1,0 +1,95 @@
+# NPM Ignore File - Controls what gets excluded from the published package
+# Only essential files will be included for end users
+
+# Development and build tools
+.github/
+.git/
+.gitignore
+.gitattributes
+.vscode/
+.idea/
+
+# Development scripts and tools
+scripts/
+examples/
+docs/
+test/
+coverage/
+
+# Configuration files
+.eslintrc*
+eslint.config.js
+.prettierrc*
+.editorconfig
+tsconfig.json
+.nyc_output/
+
+# Development dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Test and coverage
+*.test.js
+*.spec.js
+test-javascript-only.js
+*.lcov
+coverage/
+
+# Build artifacts
+dist/
+build/
+*.tgz
+*.tar.gz
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Logs
+logs
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Temporary folders
+tmp/
+temp/
+
+# Development files
+index.js
+# Keep only src/index.js, exclude root index.js if it's just for development

@@ -4,6 +4,12 @@
   "description": "High-precision Brahma Muhurat calculator for JavaScript and TypeScript",
   "main": "src/index.js",
   "types": "types/index.d.ts",
+  "files": [
+    "src/",
+    "types/",
+    "README.md",
+    "LICENSE"
+  ],
   "author": {
     "name": "Rakshit Patel",
     "email": "rakshitbharatproject@gmail.com",
@@ -62,6 +68,8 @@
     "test:coverage": "nyc mocha test/**/*.test.js",
     "lint": "eslint src/**/*.js test/**/*.js examples/**/*.js",
     "build": "node scripts/build.js",
+    "build:package": "node scripts/build-package.js",
+    "prepublishOnly": "npm run build:package && npm run test && npm run lint",
     "validate-workflows": "node scripts/validate-workflows.js",
     "check-workflows": "node scripts/validate-workflows.js",
     "docs": "cat README.md",
