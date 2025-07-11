@@ -24,7 +24,8 @@
 ⚡ **Fast** • Sub-100ms calculations optimized for performance  
 🧪 **Tested** • 83 comprehensive test cases with 60%+ coverage  
 📱 **Universal** • Works in Node.js and modern browsers  
-🔮 **Spiritual** • Respects Hindu traditions while embracing modern science
+🔮 **Spiritual** • Respects Hindu traditions while embracing modern science  
+📦 **Optimized** • Minimal 24KB package size for lightning-fast installation
 
 ## 🚀 Quick Start
 
