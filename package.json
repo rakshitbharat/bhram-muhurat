@@ -69,6 +69,7 @@
     "lint": "eslint src/**/*.js test/**/*.js examples/**/*.js",
     "build": "node scripts/build.js",
     "build:package": "node scripts/build-package.js",
+    "package:analyze": "node scripts/package-size-analysis.js",
     "prepublishOnly": "npm run build:package && npm run test && npm run lint",
     "validate-workflows": "node scripts/validate-workflows.js",
     "check-workflows": "node scripts/validate-workflows.js",
