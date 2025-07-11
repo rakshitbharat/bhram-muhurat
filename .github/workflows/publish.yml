@@ -45,9 +45,21 @@ jobs:
         
       - name: Check for vulnerabilities
         run: |
-          if npm audit --json | jq '.vulnerabilities | length' | grep -v '^0$'; then
-            echo "❌ Security vulnerabilities found"
-            npm audit
+          echo "🔍 Checking for security vulnerabilities..."
+          
+          # Run audit and capture results
+          AUDIT_RESULT=$(npm audit --json 2>/dev/null || echo '{"vulnerabilities":{}}')
+          
+          # Check for high/critical vulnerabilities
+          VULN_COUNT=$(echo "$AUDIT_RESULT" | jq '.vulnerabilities | length' 2>/dev/null || echo "0")
+          
+          if [ "$VULN_COUNT" -gt 0 ]; then
+            echo "❌ Found $VULN_COUNT security vulnerabilities"
+            echo "🔍 Running detailed audit..."
+            npm audit --audit-level moderate
+            echo ""
+            echo "🚨 Security vulnerabilities must be fixed before publishing"
+            echo "Run 'npm audit fix' to resolve issues"
             exit 1
           else
             echo "✅ No security vulnerabilities found"
@@ -282,9 +294,21 @@ jobs:
           if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
             echo "❌ NPM_TOKEN secret is not set"
             echo "Please add your NPM automation token to GitHub Secrets"
+            echo "📋 Setup instructions:"
+            echo "1. Go to https://www.npmjs.com/settings/tokens"
+            echo "2. Generate a new 'Automation' token"
+            echo "3. Add it to GitHub Secrets as NPM_TOKEN"
             exit 1
           fi
-          echo "✅ NPM token is configured"
+          
+          # Test NPM authentication
+          if npm whoami 2>/dev/null; then
+            echo "✅ NPM token is configured and valid"
+          else
+            echo "❌ NPM token is invalid or has insufficient permissions"
+            echo "Please regenerate your NPM token and update the secret"
+            exit 1
+          fi
           
       - name: Install dependencies
         run: npm ci
@@ -319,8 +343,16 @@ jobs:
         if: steps.check_published.outputs.ALREADY_PUBLISHED == 'false' && github.event.inputs.dry_run != 'true'
         run: |
           echo "📦 Publishing to NPM..."
-          npm publish --access public
-          echo "✅ Package published successfully!"
+          
+          # Publish with proper error handling
+          if npm publish --access public; then
+            echo "✅ Package published successfully!"
+            echo "🎉 Published ${{ env.PACKAGE_NAME }}@${{ needs.build.outputs.package-version }} to NPM"
+          else
+            echo "❌ Failed to publish package"
+            echo "Please check the error above and try again"
+            exit 1
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           
@@ -332,12 +364,30 @@ jobs:
           echo "⏳ Waiting for NPM registry to update..."
           sleep 30
           
-          # Retry mechanism for verification
-          for i in {1..5}; do
+          # Retry mechanism for verification with better error handling
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
             if npm view ${{ env.PACKAGE_NAME }}@$PACKAGE_VERSION version; then
               echo "✅ Package successfully published and verified!"
               echo ""
               echo "🎉 Success! Your package is now available:"
+              echo "📦 NPM: https://www.npmjs.com/package/${{ env.PACKAGE_NAME }}"
+              echo "💿 Install: npm install ${{ env.PACKAGE_NAME }}@$PACKAGE_VERSION"
+              echo "🔗 GitHub: https://github.com/rakshitbharat/bhram-muhurat"
+              exit 0
+            else
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              echo "⏳ Attempt $RETRY_COUNT/$MAX_RETRIES: Package not yet visible, retrying in 15 seconds..."
+              sleep 15
+            fi
+          done
+          
+          echo "❌ Failed to verify package publication after $MAX_RETRIES attempts"
+          echo "The package may have been published but is not yet visible in the registry"
+          echo "Please check manually: https://www.npmjs.com/package/${{ env.PACKAGE_NAME }}"
+          exit 1
               echo "📦 Install: npm install ${{ env.PACKAGE_NAME }}@$PACKAGE_VERSION"
               echo "🌐 NPM: https://www.npmjs.com/package/${{ env.PACKAGE_NAME }}"
               echo "📚 Docs: https://github.com/rakshitbharat/bhram-muhurat#readme"

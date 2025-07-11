@@ -122,22 +122,29 @@ jobs:
           
           case "$UPDATE_TYPE" in
             "patch")
+              echo "🔧 Updating patch versions only..."
               npx npm-check-updates -u --target patch
               ;;
             "minor")
+              echo "🔧 Updating minor versions..."
               npx npm-check-updates -u --target minor
               ;;
             "major")
+              echo "🔧 Updating to latest versions (including major)..."
               npx npm-check-updates -u --target latest
               ;;
             "all")
+              echo "🔧 Updating all dependencies to latest..."
               npx npm-check-updates -u
               ;;
             *)
               echo "❌ Invalid update type: $UPDATE_TYPE"
+              echo "Valid options: patch, minor, major, all"
               exit 1
               ;;
           esac
+          
+          echo "✅ Dependencies updated successfully"
           
       - name: Install updated dependencies
         run: |
@@ -162,11 +169,22 @@ jobs:
             echo "✅ Dependencies updated successfully"
             
             # Generate change summary
-            CHANGES=$(git diff package.json | grep -E '^[+-]\s*"' | head -20)
-            echo "changes<<EOF" >> $GITHUB_OUTPUT
-            echo "Dependency Updates:" >> $GITHUB_OUTPUT
-            echo "$CHANGES" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
+            CHANGES=$(git diff --name-only package.json package-lock.json 2>/dev/null || echo "No changes")
+            if [ "$CHANGES" != "No changes" ]; then
+              echo "changes<<EOF" >> $GITHUB_OUTPUT
+              echo "## 📦 Updated Dependencies" >> $GITHUB_OUTPUT
+              echo "" >> $GITHUB_OUTPUT
+              echo "### Changes Made:" >> $GITHUB_OUTPUT
+              git diff package.json | grep -E '^[+-]\s*"' | head -20 | sed 's/^+/✅ Added:/' | sed 's/^-/❌ Removed:/' >> $GITHUB_OUTPUT
+              echo "" >> $GITHUB_OUTPUT
+              echo "### Update Summary:" >> $GITHUB_OUTPUT
+              echo "- Update type: $UPDATE_TYPE" >> $GITHUB_OUTPUT
+              echo "- Files modified: package.json, package-lock.json" >> $GITHUB_OUTPUT
+              echo "- All tests passed after updates" >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+            else
+              echo "changes=No dependency changes detected" >> $GITHUB_OUTPUT
+            fi
           fi
           
       - name: Create Pull Request

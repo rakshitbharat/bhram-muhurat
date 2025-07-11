@@ -58,6 +58,8 @@
     "test:coverage": "nyc mocha test/**/*.test.js",
     "lint": "eslint src/**/*.js test/**/*.js examples/**/*.js",
     "build": "node scripts/build.js",
+    "validate-workflows": "node scripts/validate-workflows.js",
+    "check-workflows": "node scripts/validate-workflows.js",
     "docs": "cat README.md",
     "check-engines": "node scripts/check-node-version.js",
     "postinstall": "npm run check-engines",
