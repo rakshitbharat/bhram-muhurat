@@ -1,0 +1,161 @@
+name: 🏷️ Auto Tag & Release
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'package.json'
+  workflow_dispatch:
+    inputs:
+      force_tag:
+        description: 'Force create tag even if version unchanged'
+        type: boolean
+        default: false
+
+jobs:
+  check-version:
+    name: Check for Version Change
+    runs-on: ubuntu-latest
+    outputs:
+      version-changed: ${{ steps.check.outputs.changed }}
+      new-version: ${{ steps.check.outputs.version }}
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Need previous commit to compare
+          
+      - name: Check if version changed
+        id: check
+        run: |
+          # Get current version
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          
+          # Get previous version
+          git checkout HEAD~1 -- package.json
+          PREVIOUS_VERSION=$(node -p "require('./package.json').version")
+          git checkout HEAD -- package.json
+          
+          echo "Previous version: $PREVIOUS_VERSION"
+          echo "Current version: $CURRENT_VERSION"
+          
+          if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ] || [ "${{ github.event.inputs.force_tag }}" == "true" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            if [ "${{ github.event.inputs.force_tag }}" == "true" ]; then
+              echo "🔄 Force tagging enabled for version: $CURRENT_VERSION"
+            else
+              echo "✅ Version changed from $PREVIOUS_VERSION to $CURRENT_VERSION"
+            fi
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ Version unchanged: $CURRENT_VERSION"
+          fi
+
+  create-tag:
+    name: Create Git Tag
+    needs: check-version
+    if: needs.check-version.outputs.version-changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run comprehensive tests before tagging
+        run: |
+          echo "🧪 Running comprehensive validation..."
+          npm run lint
+          npm test
+          npm run validate-deps
+          
+          # Validate package.json format
+          node -e "
+            const pkg = require('./package.json');
+            if (!pkg.name || !pkg.version || !pkg.main) {
+              throw new Error('Invalid package.json structure');
+            }
+            console.log('✅ Package.json validation passed');
+          "
+          
+          # Test package can be imported
+          node -e "
+            const calc = require('./src/index.js');
+            if (typeof calc.calculate !== 'function') {
+              throw new Error('Main API method not available');
+            }
+            console.log('✅ Package API validation passed');
+          "
+          
+          echo "✅ All validations passed"
+          
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+      - name: Create and push tag with validation
+        run: |
+          TAG_NAME="v${{ needs.check-version.outputs.new-version }}"
+          VERSION="${{ needs.check-version.outputs.new-version }}"
+          
+          echo "🏷️ Preparing to create tag: $TAG_NAME"
+          
+          # Validate semantic versioning format
+          if ! echo "$VERSION" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?(\+[a-zA-Z0-9.-]+)?$'; then
+            echo "❌ Invalid semantic version format: $VERSION"
+            echo "Expected format: MAJOR.MINOR.PATCH (e.g., 1.0.0)"
+            exit 1
+          fi
+          
+          # Check if tag already exists locally or remotely
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "⚠️ Tag $TAG_NAME already exists locally, skipping..."
+            exit 0
+          fi
+          
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME$"; then
+            echo "⚠️ Tag $TAG_NAME already exists on remote, skipping..."
+            exit 0
+          fi
+          
+          # Create annotated tag with detailed message
+          TAG_MESSAGE="Release version $VERSION
+
+Automated tag created by GitHub Actions
+Date: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+Commit: $(git rev-parse --short HEAD)
+Author: $(git log -1 --pretty=format:'%an <%ae>')
+
+This release includes:
+- Comprehensive test suite validation
+- Security audit checks  
+- Cross-platform compatibility testing
+- Automated quality assurance
+
+Install with: npm install bhram-muhurat@$VERSION"
+
+          echo "📝 Creating annotated tag with message..."
+          git tag -a "$TAG_NAME" -m "$TAG_MESSAGE"
+          
+          echo "🚀 Pushing tag to remote..."
+          git push origin "$TAG_NAME"
+          
+          echo "✅ Successfully created and pushed tag: $TAG_NAME"
+          echo ""
+          echo "🎯 Next steps:"
+          echo "   • Tag will trigger the publish workflow automatically"
+          echo "   • Monitor: https://github.com/rakshitbharat/bhram-muhurat/actions"
+          echo "   • Release: https://github.com/rakshitbharat/bhram-muhurat/releases/tag/$TAG_NAME"

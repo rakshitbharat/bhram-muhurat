@@ -1,0 +1,183 @@
+name: Release and Publish
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v1.0.0, v1.2.3, etc.
+
+jobs:
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x, 22.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run linting
+        run: npm run lint
+        
+      - name: Run tests
+        run: npm test
+        
+      - name: Run test coverage
+        run: npm run test:coverage
+        
+      - name: Validate dependencies
+        run: npm run validate-deps
+
+  release:
+    name: Create Release
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for changelog
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org/'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        
+      - name: Verify package.json version matches tag
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          TAG_VERSION="${{ steps.version.outputs.VERSION }}"
+          if [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
+            echo "Version mismatch: package.json has $PACKAGE_VERSION but tag is v$TAG_VERSION"
+            exit 1
+          fi
+          echo "✅ Version verification passed: $PACKAGE_VERSION"
+          
+      - name: Build package
+        run: npm run build
+        
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get commits since last tag
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -z "$PREVIOUS_TAG" ]; then
+            COMMITS=$(git log --pretty=format:"* %s (%h)" --no-merges)
+          else
+            COMMITS=$(git log $PREVIOUS_TAG..HEAD --pretty=format:"* %s (%h)" --no-merges)
+          fi
+          
+          # Create changelog content
+          CHANGELOG="## What's Changed
+          
+          $COMMITS
+          
+          **Full Changelog**: https://github.com/rakshitbharat/bhram-muhurat/compare/$PREVIOUS_TAG...v${{ steps.version.outputs.VERSION }}"
+          
+          # Save changelog to file and output
+          echo "$CHANGELOG" > CHANGELOG.md
+          echo 'CHANGELOG<<EOF' >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+          
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref }}
+          name: 'Release v${{ steps.version.outputs.VERSION }}'
+          body: ${{ steps.changelog.outputs.CHANGELOG }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+  publish:
+    name: Publish to NPM
+    needs: [test, release]
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org/'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build package
+        run: npm run build
+        
+      - name: Run final tests
+        run: npm test
+        
+      - name: Check if package already published
+        id: check_published
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if npm view bhram-muhurat@$PACKAGE_VERSION version 2>/dev/null; then
+            echo "ALREADY_PUBLISHED=true" >> $GITHUB_OUTPUT
+            echo "⚠️ Version $PACKAGE_VERSION is already published to NPM"
+          else
+            echo "ALREADY_PUBLISHED=false" >> $GITHUB_OUTPUT
+            echo "✅ Version $PACKAGE_VERSION is ready to be published"
+          fi
+          
+      - name: Publish to NPM
+        if: steps.check_published.outputs.ALREADY_PUBLISHED == 'false'
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          
+      - name: Verify publication
+        if: steps.check_published.outputs.ALREADY_PUBLISHED == 'false'
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          echo "⏳ Waiting for NPM registry to update..."
+          sleep 30
+          
+          # Verify the package is available
+          if npm view bhram-muhurat@$PACKAGE_VERSION version; then
+            echo "✅ Package successfully published to NPM!"
+            echo "📦 Install with: npm install bhram-muhurat@$PACKAGE_VERSION"
+          else
+            echo "❌ Failed to verify package publication"
+            exit 1
+          fi
+          
+      - name: Update package.json for next development
+        run: |
+          # This is optional - automatically prepare for next version
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "📋 Published version: $CURRENT_VERSION"
+          echo "🚀 Package is now available at: https://www.npmjs.com/package/bhram-muhurat"
