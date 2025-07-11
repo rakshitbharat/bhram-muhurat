@@ -13,7 +13,7 @@ This guide provides comprehensive setup for automated releases, dependency manag
 
 ## 📋 Prerequisites
 
-1. **GitHub Repository**: `https://github.com/rakshitbharat/bhram-muhurat`
+1. **GitHub Repository**: `https://github.com/rakshitbharat/brahma-muhurat`
 2. **NPM Account**: Account with publishing permissions
 3. **NPM Token**: Automation token for GitHub Actions
 

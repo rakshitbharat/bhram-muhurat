@@ -162,4 +162,4 @@ conditions.forEach(condition => {
 
 console.log('✅ Simple example completed!');
 console.log('\n📖 For more examples, check the examples/ directory');
-console.log('🔗 Documentation: https://github.com/rakshitbharat/bhram-muhurat');
+console.log('🔗 Documentation: https://github.com/rakshitbharat/brahma-muhurat');

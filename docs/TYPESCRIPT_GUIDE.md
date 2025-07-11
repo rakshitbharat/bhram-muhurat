@@ -5,7 +5,7 @@ The Brahma Muhurat Calculator provides full TypeScript support with comprehensiv
 
 ## Installation
 ```bash
-npm install bhram-muhurat
+npm install brahma-muhurat
 npm install -D typescript ts-node @types/node
 ```
 
@@ -18,15 +18,15 @@ import {
   CalculationParams, 
   CalculationResult, 
   CalculatorOptions 
-} from 'bhram-muhurat';
+} from 'brahma-muhurat';
 ```
 
 ## Basic TypeScript Usage
 
 ### Simple Calculation
 ```typescript
-import { CalculationParams, CalculationResult } from 'bhram-muhurat';
-const BrahmaMuhuratCalculator = require('bhram-muhurat');
+import { CalculationParams, CalculationResult } from 'brahma-muhurat';
+const BrahmaMuhuratCalculator = require('brahma-muhurat');
 
 const calculator = new BrahmaMuhuratCalculator({
   precision: 'high',

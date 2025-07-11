@@ -95,7 +95,7 @@ jobs:
           
           $COMMITS
           
-          **Full Changelog**: https://github.com/rakshitbharat/bhram-muhurat/compare/$PREVIOUS_TAG...v${{ steps.version.outputs.VERSION }}"
+          **Full Changelog**: https://github.com/rakshitbharat/brahma-muhurat/compare/$PREVIOUS_TAG...v${{ steps.version.outputs.VERSION }}"
           
           # Save changelog to file and output
           echo "$CHANGELOG" > CHANGELOG.md
@@ -145,7 +145,7 @@ jobs:
         id: check_published
         run: |
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
-          if npm view bhram-muhurat@$PACKAGE_VERSION version 2>/dev/null; then
+          if npm view brahma-muhurat@$PACKAGE_VERSION version 2>/dev/null; then
             echo "ALREADY_PUBLISHED=true" >> $GITHUB_OUTPUT
             echo "⚠️ Version $PACKAGE_VERSION is already published to NPM"
           else
@@ -167,9 +167,9 @@ jobs:
           sleep 30
           
           # Verify the package is available
-          if npm view bhram-muhurat@$PACKAGE_VERSION version; then
+          if npm view brahma-muhurat@$PACKAGE_VERSION version; then
             echo "✅ Package successfully published to NPM!"
-            echo "📦 Install with: npm install bhram-muhurat@$PACKAGE_VERSION"
+            echo "📦 Install with: npm install brahma-muhurat@$PACKAGE_VERSION"
           else
             echo "❌ Failed to verify package publication"
             exit 1
@@ -180,4 +180,4 @@ jobs:
           # This is optional - automatically prepare for next version
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           echo "📋 Published version: $CURRENT_VERSION"
-          echo "🚀 Package is now available at: https://www.npmjs.com/package/bhram-muhurat"
+          echo "🚀 Package is now available at: https://www.npmjs.com/package/brahma-muhurat"

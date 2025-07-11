@@ -147,7 +147,7 @@ class ReleaseHelper {
       console.log('🎯 Next steps:');
       console.log('   • Auto-tag workflow will create the git tag');
       console.log('   • Publish workflow will handle NPM publication');
-      console.log('   • Monitor progress: https://github.com/rakshitbharat/bhram-muhurat/actions');
+      console.log('   • Monitor progress: https://github.com/rakshitbharat/brahma-muhurat/actions');
       console.log('');
       console.log('📦 Your package will be available at:');
       console.log(`   npm install ${this.packageJson.name}@${this.getNextVersion(versionType)}`);

@@ -20,7 +20,7 @@ on:
 
 env:
   NODE_VERSION: '20.x'
-  PACKAGE_NAME: 'bhram-muhurat'
+  PACKAGE_NAME: 'brahma-muhurat'
 
 jobs:
   # Security and quality checks
@@ -242,12 +242,12 @@ jobs:
           
           ### 🔗 Links
           - **NPM Package**: https://www.npmjs.com/package/${{ env.PACKAGE_NAME }}
-          - **Documentation**: https://github.com/rakshitbharat/bhram-muhurat#readme
-          - **Issues**: https://github.com/rakshitbharat/bhram-muhurat/issues"
+          - **Documentation**: https://github.com/rakshitbharat/brahma-muhurat#readme
+          - **Issues**: https://github.com/rakshitbharat/brahma-muhurat/issues"
           
           if [ -n "$PREVIOUS_TAG" ]; then
             CHANGELOG="$CHANGELOG
-          - **Full Changelog**: https://github.com/rakshitbharat/bhram-muhurat/compare/$PREVIOUS_TAG...$CURRENT_TAG"
+          - **Full Changelog**: https://github.com/rakshitbharat/brahma-muhurat/compare/$PREVIOUS_TAG...$CURRENT_TAG"
           fi
           
           # Save to file and output
@@ -375,7 +375,7 @@ jobs:
               echo "🎉 Success! Your package is now available:"
               echo "📦 NPM: https://www.npmjs.com/package/${{ env.PACKAGE_NAME }}"
               echo "💿 Install: npm install ${{ env.PACKAGE_NAME }}@$PACKAGE_VERSION"
-              echo "🔗 GitHub: https://github.com/rakshitbharat/bhram-muhurat"
+              echo "🔗 GitHub: https://github.com/rakshitbharat/brahma-muhurat"
               exit 0
             else
               RETRY_COUNT=$((RETRY_COUNT + 1))
@@ -390,7 +390,7 @@ jobs:
           exit 1
               echo "📦 Install: npm install ${{ env.PACKAGE_NAME }}@$PACKAGE_VERSION"
               echo "🌐 NPM: https://www.npmjs.com/package/${{ env.PACKAGE_NAME }}"
-              echo "📚 Docs: https://github.com/rakshitbharat/bhram-muhurat#readme"
+              echo "📚 Docs: https://github.com/rakshitbharat/brahma-muhurat#readme"
               exit 0
             else
               echo "⏳ Attempt $i/5: Package not yet available, waiting..."
@@ -439,7 +439,7 @@ jobs:
           echo "✅ GitHub release created"
           echo ""
           echo "📦 Package: https://www.npmjs.com/package/${{ env.PACKAGE_NAME }}"
-          echo "🚀 Release: https://github.com/rakshitbharat/bhram-muhurat/releases"
+          echo "🚀 Release: https://github.com/rakshitbharat/brahma-muhurat/releases"
           
       - name: Failure notification
         if: needs.publish.result == 'failure'
@@ -447,5 +447,5 @@ jobs:
           echo "❌ RELEASE FAILED!"
           echo ""
           echo "Please check the workflow logs for details:"
-          echo "https://github.com/rakshitbharat/bhram-muhurat/actions"
+          echo "https://github.com/rakshitbharat/brahma-muhurat/actions"
           exit 1

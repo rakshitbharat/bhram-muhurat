@@ -279,7 +279,7 @@ async function main() {
     console.log('\n📦 Users can install with:');
     
     const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
-    console.log(`   npm install ${pkg.name || 'bhram-muhurat'}`);
+    console.log(`   npm install ${pkg.name || 'brahma-muhurat'}`);
     
   } catch (error) {
     console.error('💥 Build validation failed:', error.message);

@@ -99,7 +99,7 @@ function validatePackageJson() {
     
     // Check repository URL
     if (pkg.repository && pkg.repository.url) {
-      if (!pkg.repository.url.includes('rakshitbharat/bhram-muhurat')) {
+      if (!pkg.repository.url.includes('rakshitbharat/brahma-muhurat')) {
         warnings.push(`⚠️ Repository URL may be incorrect: ${pkg.repository.url}`);
       }
     }
@@ -198,7 +198,7 @@ function checkCommonIssues() {
   
   // Check for consistent repository names
   const readmeContent = fs.readFileSync(path.join(__dirname, '..', 'README.md'), 'utf8');
-  if (readmeContent.includes('brahma-muhurat') && readmeContent.includes('bhram-muhurat')) {
+  if (readmeContent.includes('brahma-muhurat') && readmeContent.includes('brahma-muhurat')) {
     warnings.push('⚠️ README.md contains inconsistent repository name references');
   }
   

@@ -196,7 +196,7 @@ class BrahmaMuhuratCalculator {
       description: 'High-precision Brahma Muhurat calculator for JavaScript',
       author: 'Hindu Calendar Library',
       license: 'MIT',
-      website: 'https://github.com/rakshitbharat/bhram-muhurat',
+      website: 'https://github.com/rakshitbharat/brahma-muhurat',
       supportedPrecisionLevels: ['basic', 'high', 'maximum'],
       supportedTraditions: ['standard', 'extended', 'smarta', 'dynamic'],
       supportedRefractionModels: ['bennett', 'saemundsson', 'rigorous']

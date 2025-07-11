@@ -278,7 +278,7 @@ gh run list --workflow=publish.yml
 gh run view [run-id] --log
 
 # Check package on NPM
-npm view bhram-muhurat
+npm view brahma-muhurat
 
 # Verify git tags
 git tag -l

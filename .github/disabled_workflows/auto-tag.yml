@@ -145,7 +145,7 @@ This release includes:
 - Cross-platform compatibility testing
 - Automated quality assurance
 
-Install with: npm install bhram-muhurat@$VERSION"
+Install with: npm install brahma-muhurat@$VERSION"
 
           echo "📝 Creating annotated tag with message..."
           git tag -a "$TAG_NAME" -m "$TAG_MESSAGE"
@@ -157,5 +157,5 @@ Install with: npm install bhram-muhurat@$VERSION"
           echo ""
           echo "🎯 Next steps:"
           echo "   • Tag will trigger the publish workflow automatically"
-          echo "   • Monitor: https://github.com/rakshitbharat/bhram-muhurat/actions"
-          echo "   • Release: https://github.com/rakshitbharat/bhram-muhurat/releases/tag/$TAG_NAME"
+          echo "   • Monitor: https://github.com/rakshitbharat/brahma-muhurat/actions"
+          echo "   • Release: https://github.com/rakshitbharat/brahma-muhurat/releases/tag/$TAG_NAME"

@@ -148,7 +148,7 @@ brahma-muhurat/
 
 ## Example Usage Code
 ```javascript
-const BrahmaMuhurat = require('bhram-muhurat');
+const BrahmaMuhurat = require('brahma-muhurat');
 
 // Basic usage
 const calculator = new BrahmaMuhurat({ precision: 'high' });

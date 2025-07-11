@@ -4,10 +4,10 @@
 
 ### *The most auspicious time for your spiritual practice*
 
-[![npm version](https://img.shields.io/npm/v/bhram-muhurat.svg?style=for-the-badge&color=orange)](https://www.npmjs.com/package/bhram-muhurat)
-[![downloads](https://img.shields.io/npm/dm/bhram-muhurat.svg?style=for-the-badge&color=brightgreen)](https://www.npmjs.com/package/bhram-muhurat)
-[![license](https://img.shields.io/npm/l/bhram-muhurat.svg?style=for-the-badge&color=blue)](https://github.com/rakshitbharat/bhram-muhurat/blob/main/LICENSE)
-[![tests](https://img.shields.io/badge/tests-83%20passing-success?style=for-the-badge)](https://github.com/rakshitbharat/bhram-muhurat)
+[![npm version](https://img.shields.io/npm/v/brahma-muhurat.svg?style=for-the-badge&color=orange)](https://www.npmjs.com/package/brahma-muhurat)
+[![downloads](https://img.shields.io/npm/dm/brahma-muhurat.svg?style=for-the-badge&color=brightgreen)](https://www.npmjs.com/package/brahma-muhurat)
+[![license](https://img.shields.io/npm/l/brahma-muhurat.svg?style=for-the-badge&color=blue)](https://github.com/rakshitbharat/brahma-muhurat/blob/main/LICENSE)
+[![tests](https://img.shields.io/badge/tests-83%20passing-success?style=for-the-badge)](https://github.com/rakshitbharat/brahma-muhurat)
 
 **A high-precision JavaScript library for calculating Brahma Muhurat with NASA-grade astronomical accuracy**
 
@@ -30,12 +30,12 @@
 ## 🚀 Quick Start
 
 ```bash
-npm install bhram-muhurat
+npm install brahma-muhurat
 ```
 
 ### JavaScript Usage
 ```javascript
-const BrahmaMuhuratCalculator = require('bhram-muhurat');
+const BrahmaMuhuratCalculator = require('brahma-muhurat');
 
 // 🎯 Simple calculation
 const calculator = new BrahmaMuhuratCalculator();
@@ -54,8 +54,8 @@ console.log(`⏰ Duration: ${result.brahmaMuhurat.duration.formatted}`);
 
 ### TypeScript Usage
 ```typescript
-import { CalculationParams, CalculationResult } from 'bhram-muhurat';
-const BrahmaMuhuratCalculator = require('bhram-muhurat');
+import { CalculationParams, CalculationResult } from 'brahma-muhurat';
+const BrahmaMuhuratCalculator = require('brahma-muhurat');
 
 // 🎯 Type-safe calculation
 const calculator = new BrahmaMuhuratCalculator({
@@ -112,7 +112,7 @@ console.log(`🕉️ Brahma Muhurat: ${result.brahmaMuhurat.start.localTime} - $
 <summary><b>🏗️ View Project Structure</b></summary>
 
 ```
-🕉️ bhram-muhurat/
+🕉️ brahma-muhurat/
 ├── 📁 src/                          # Source code
 │   ├── 📁 core/                     # Core astronomical calculations
 │   │   ├── 🧮 astronomical.js       # NASA-grade solar calculations
@@ -262,8 +262,8 @@ const calculator = new BrahmaMuhuratCalculator({
 Full TypeScript integration with comprehensive type definitions:
 
 ```typescript
-import { CalculationParams, CalculationResult, CalculatorOptions } from 'bhram-muhurat';
-const BrahmaMuhuratCalculator = require('bhram-muhurat');
+import { CalculationParams, CalculationResult, CalculatorOptions } from 'brahma-muhurat';
+const BrahmaMuhuratCalculator = require('brahma-muhurat');
 
 // Type-safe calculator creation
 const calculator = new BrahmaMuhuratCalculator({
@@ -454,7 +454,7 @@ We welcome contributions! Please:
 5. 🚀 Submit a pull request
 
 ### 💬 **Support & Community**
-- 🐛 **Issues**: [GitHub Issues](https://github.com/rakshitbharat/bhram-muhurat/issues)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/rakshitbharat/brahma-muhurat/issues)
 - 📖 **Documentation**: Comprehensive guides and examples
 - 💡 **Feature Requests**: We'd love to hear your ideas!
 
@@ -483,8 +483,8 @@ We welcome contributions! Please:
 
 *"Time is the most precious gift - use it wisely for spiritual growth"*
 
-[![npm](https://img.shields.io/npm/v/bhram-muhurat.svg?style=for-the-badge&logo=npm&color=red)](https://www.npmjs.com/package/bhram-muhurat)
-[![GitHub](https://img.shields.io/github/stars/rakshitbharat/bhram-muhurat.svg?style=for-the-badge&logo=github&color=black)](https://github.com/rakshitbharat/bhram-muhurat)
+[![npm](https://img.shields.io/npm/v/brahma-muhurat.svg?style=for-the-badge&logo=npm&color=red)](https://www.npmjs.com/package/brahma-muhurat)
+[![GitHub](https://img.shields.io/github/stars/rakshitbharat/brahma-muhurat.svg?style=for-the-badge&logo=github&color=black)](https://github.com/rakshitbharat/brahma-muhurat)
 
 **Made with 🧠 Human Wisdom + 🤖 AI Innovation + 🙏 Spiritual Devotion**
 

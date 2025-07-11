@@ -110,7 +110,7 @@ npm run prepublishOnly    # Pre-publication checks
 ### Installation for Users
 ```bash
 # Fast, minimal installation
-npm install bhram-muhurat
+npm install brahma-muhurat
 
 # Users get:
 # ✅ Core calculation engine (68KB)
@@ -203,7 +203,7 @@ Your NPM package is now:
 npm publish
 
 # Users can now enjoy:
-npm install bhram-muhurat  # Fast, clean installation
+npm install brahma-muhurat  # Fast, clean installation
 ```
 
 **🕉️ Your spiritual calculation library is now blessed with perfect packaging! ✨**
