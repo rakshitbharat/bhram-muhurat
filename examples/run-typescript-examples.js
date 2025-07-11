@@ -18,12 +18,12 @@ console.log('=================================================\n');
 try {
   execSync('npx tsc --version', { stdio: 'pipe' });
   console.log('✅ TypeScript compiler available');
-} catch (error) {
+} catch (_error) {
   console.log('⚠️  TypeScript compiler not found. Installing...');
   try {
     execSync('npm install -g typescript ts-node', { stdio: 'inherit' });
     console.log('✅ TypeScript installed successfully');
-  } catch (installError) {
+  } catch (_installError) {
     console.error('❌ Failed to install TypeScript');
     process.exit(1);
   }
@@ -62,7 +62,7 @@ function runExample(example) {
         cwd: __dirname 
       });
       console.log(`✅ ${example.name} completed successfully`);
-    } catch (tsNodeError) {
+    } catch (_tsNodeError) {
       console.log('⚠️  ts-node not available, compiling manually...');
       
       // Compile TypeScript to JavaScript
@@ -86,8 +86,8 @@ function runExample(example) {
       
       console.log(`✅ ${example.name} completed successfully`);
     }
-  } catch (error) {
-    console.error(`❌ ${example.name} failed:`, error.message);
+  } catch (_error) {
+    console.error(`❌ ${example.name} failed:`, _error.message);
     return false;
   }
   
@@ -99,7 +99,7 @@ async function main() {
   console.log('🎯 Running TypeScript Examples...\n');
   
   let successCount = 0;
-  let totalCount = examples.length;
+  const totalCount = examples.length;
   
   for (const example of examples) {
     const success = runExample(example);
