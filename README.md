@@ -32,6 +32,7 @@
 npm install bhram-muhurat
 ```
 
+### JavaScript Usage
 ```javascript
 const BrahmaMuhuratCalculator = require('bhram-muhurat');
 
@@ -48,6 +49,29 @@ const result = calculator.calculate({
 console.log(`🌅 Brahma Muhurat: ${result.brahmaMuhurat.start.localTime} - ${result.brahmaMuhurat.end.localTime}`);
 console.log(`☀️ Sunrise: ${result.sunrise.localTime}`);
 console.log(`⏰ Duration: ${result.brahmaMuhurat.duration.formatted}`);
+```
+
+### TypeScript Usage
+```typescript
+import { CalculationParams, CalculationResult } from 'bhram-muhurat';
+const BrahmaMuhuratCalculator = require('bhram-muhurat');
+
+// 🎯 Type-safe calculation
+const calculator = new BrahmaMuhuratCalculator({
+  precision: 'high',
+  traditionType: 'standard',
+  refractionModel: 'bennett'
+});
+
+const params: CalculationParams = {
+  latitude: 25.317644,
+  longitude: 83.005495,
+  date: '2024-02-18',
+  timezone: 'Asia/Kolkata'
+};
+
+const result: CalculationResult = calculator.calculate(params);
+console.log(`🕉️ Brahma Muhurat: ${result.brahmaMuhurat.start.localTime} - ${result.brahmaMuhurat.end.localTime}`);
 ```
 
 ## 🌟 Key Features
@@ -292,6 +316,12 @@ npm run lint
 # 🚀 Try examples
 npm run example          # Simple usage
 npm run example:advanced # Advanced features
+
+# 📝 TypeScript examples
+npm run example:typescript        # All TypeScript examples
+npm run example:ts-simple        # Simple TypeScript example
+npm run example:ts-advanced      # Advanced TypeScript features
+npm run example:ts-integration   # TypeScript integration patterns
 ```
 
 **Quality Metrics:**
