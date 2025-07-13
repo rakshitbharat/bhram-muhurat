@@ -74,8 +74,6 @@
     "validate-workflows": "node scripts/validate-workflows.js",
     "check-workflows": "node scripts/validate-workflows.js",
     "docs": "cat README.md",
-    "check-engines": "node scripts/check-node-version.js",
-    "postinstall": "npm run check-engines",
     "update-deps": "node scripts/update-dependencies.js",
     "check-latest": "npm outdated",
     "auto-update": "npx npm-check-updates -u && npm install",
